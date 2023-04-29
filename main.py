@@ -41,17 +41,17 @@ def get_book_html(book_id):
 
 def parse_book_page(soup):
     
-    title_tag = soup.find('h1')
+    title_tag = soup.select_one('h1')
     title_tag_text = title_tag.text.split('::')
-    comments = soup.find_all('div', class_='texts')
-    genres = soup.find('span', class_='d_book').find_all('a')
+    comments = soup.select('.texts span')
+    genres = soup.select('.d_book a')
     book_features = {
         'book_title':  title_tag_text[0].strip(),
         'book_author': title_tag_text[1].strip(),
-        'book_comments': [comment.find('span').text for comment in comments],
-        'book_genres': [genre.text for genre in genres],
-        'image_src': soup.find('div', class_='bookimage').find('img')['src'],
-    }
+        'book_comments': [comment.text for comment in comments],
+        'book_genres': [genre.text for genre in genres], 
+        'image_src': soup.select_one('.bookimage img')['src'],
+    }    
     return book_features    
 
 

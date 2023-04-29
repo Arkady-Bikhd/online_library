@@ -23,7 +23,7 @@ def main():
         
     books_feateres = list()   
     for page_id in range(page_start, page_end+1):
-        try:
+        try:            
             books_feateres.append(fetch_books(page_id, books_folder, images_folder))                                  
         except HTTPError: 
             pass
@@ -42,10 +42,9 @@ def get_genre_html(page_id, genre_id='l55'):
 
 def parse_genre_page(soup: BeautifulSoup):    
     
-    book_ids = list()    
-    for find_div in soup.find_all('div', class_='bookimage'):
-        for tag_a in find_div:
-            book_ids.append(''.join(filter(str.isdigit, tag_a.get('href'))))
+    href_selector = '.bookimage a'
+    hrefs = soup.select(href_selector)    
+    book_ids = [(''.join(filter(str.isdigit, href['href']))) for href in hrefs]
     return book_ids           
 
 
@@ -64,7 +63,8 @@ def fetch_books(page_id, books_folder, images_folder):
         book_feateres = parse_book_page(get_book_html(book_id))
         download_txt(book_id, book_feateres['book_title'], books_folder)
         download_image(book_id, book_feateres['image_src'], images_folder)
-        book_feateres['book_path'] = f'{books_folder}/{book_feateres["book_title"]}.txt'       
+        book_feateres['book_path'] = f'{books_folder}/{book_feateres["book_title"]}.txt'
+        print(book_feateres)       
         page_book_feateres.append(book_feateres)          
     return page_book_feateres
 
