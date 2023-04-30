@@ -57,6 +57,14 @@ def parse_book_page(soup):
 
 def check_for_redirect(response):
 
+    '''
+        В функции убран вызов исключения, т.к.
+        если срабатывет исключение обнуляются 
+        списки:
+            page_book_feateres строка 68
+            books_feateres строка 26 
+        в файле parse_tululu_category.py
+    '''
     return not response.history
        # raise HTTPError
      
