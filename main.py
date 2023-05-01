@@ -57,16 +57,8 @@ def parse_book_page(soup):
 
 def check_for_redirect(response):
 
-    '''
-        В функции убран вызов исключения, т.к.
-        если срабатывет исключение обнуляются 
-        списки:
-            page_book_feateres строка 68
-            books_feateres строка 26 
-        в файле parse_tululu_category.py
-    '''
-    return not response.history
-       # raise HTTPError
+    if response.history
+       raise HTTPError
      
 
 
@@ -76,13 +68,13 @@ def download_txt(book_id, book_title, folder):
     payload = {'id': book_id}
     response = requests.get(text_url, params=payload)
     response.raise_for_status()
-    if check_for_redirect(response):
-        filename = f'{sanitize_filename(book_title)}.txt'
-        current_dir = Path.cwd() / folder
-        Path(current_dir).mkdir(parents=True, exist_ok=True)
-        filepath = Path() / current_dir / filename
-        with open(filepath, 'wb') as file:
-            file.write(response.content)
+    check_for_redirect(response)
+    filename = f'{sanitize_filename(book_title)}.txt'
+    current_dir = Path.cwd() / folder
+    Path(current_dir).mkdir(parents=True, exist_ok=True)
+    filepath = Path() / current_dir / filename
+    with open(filepath, 'wb') as file:
+        file.write(response.content)
 
 def download_image(book_id, image_src, folder):
 
