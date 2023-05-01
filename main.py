@@ -10,7 +10,7 @@ from retry import retry
 
 @retry(ConnectionError, tries=3, delay=1, backoff=5)
 def fetch_book(book_id, books_folder, images_folder):
-    book_feateres = parse_book_page(get_book_html(book_id))
+    book_feateres = parse_book_page(get_html(book_id=book_id))
     download_txt(book_id, book_feateres['book_title'], books_folder)
     download_image(book_id, book_feateres['image_src'], images_folder)
     print_book_features(book_feateres)
@@ -30,10 +30,14 @@ def main():
             print('Ошибка соединения')               
     
 
-def get_book_html(book_id):
+def get_html(book_id=None, page_id=None, genre_id='l55'):
 
-    book_url = f'https://tululu.org/b{book_id}/' 
-    response = requests.get(book_url)
+    url = 'https://tululu.org/'
+    if book_id:
+        url = f'{url}b{book_id}/'
+    if page_id:
+        url =  f'{url}{genre_id}/{page_id}/'
+    response = requests.get(url)
     response.raise_for_status()
     check_for_redirect(response)
     return BeautifulSoup(response.text, 'lxml')
@@ -57,7 +61,7 @@ def parse_book_page(soup):
 
 def check_for_redirect(response):
 
-    if response.history
+    if response.history:
        raise HTTPError
      
 
