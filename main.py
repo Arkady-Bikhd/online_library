@@ -28,15 +28,20 @@ def main():
             print('Книга с таким номером не найдена')
         except ConnectionError:
             print('Ошибка соединения')               
+
+
+def url_formation(book_id=None, page_id=None, genre_id='l55'):
     
-
-def get_html(book_id=None, page_id=None, genre_id='l55'):
-
     url = 'https://tululu.org/'
     if book_id:
         url = f'{url}b{book_id}/'
     if page_id:
-        url =  f'{url}{genre_id}/{page_id}/'
+        url = f'{url}{genre_id}/{page_id}/'
+
+
+def get_html(book_id=None, page_id=None, genre_id='l55'):
+    
+    url = url_formation(book_id=book_id, page_id=page_id, genre_id=genre_id)
     response = requests.get(url)
     response.raise_for_status()
     check_for_redirect(response)
