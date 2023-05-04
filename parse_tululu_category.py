@@ -3,7 +3,7 @@ from requests.exceptions import HTTPError, ConnectionError
 from bs4 import BeautifulSoup
 import argparse
 from retry import retry
-from main import parse_book_page, download_txt, download_image, get_html
+from main import parse_book_page, download_txt, download_image, get_html, url_formation
 import json
 
 
@@ -18,7 +18,7 @@ def main():
         images_folder = Path() / dest_folder / images_folder
     end_page = initial_args.end_page
     if not end_page:
-        end_page = int(get_html(page_id=initial_args.start_page).select('.npage')[-1].text)       
+        end_page = int(get_html(url_formation(page_id=initial_args.start_page)).select('.npage')[-1].text)       
     books_feateres = list()   
     for page_id in range(initial_args.start_page, end_page + 1):
         try:                    
@@ -49,10 +49,10 @@ def create_books_json(books_feateres, json_path):
 
 @retry(ConnectionError, tries=3, delay=1, backoff=5)
 def fetch_books(page_id, books_folder, images_folder, skip_txt, skip_images):
-    book_ids = parse_genre_page(get_html(page_id=page_id))
+    book_ids = parse_genre_page(get_html(url_formation(page_id=page_id)))
     page_book_feateres = list()           
     for book_id in book_ids:        
-        book_feateres = parse_book_page(get_html(book_id=book_id))
+        book_feateres = parse_book_page(get_html(url_formation(book_id=book_id)))
         if not skip_txt:
             download_txt(book_id, book_feateres['book_title'], books_folder)
             book_feateres['book_path'] = f'{books_folder}/{book_feateres["book_title"]}.txt' 
