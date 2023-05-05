@@ -10,7 +10,7 @@ from retry import retry
 
 @retry(ConnectionError, tries=3, delay=1, backoff=5)
 def fetch_book(book_id, books_folder, images_folder):
-    book_feateres = parse_book_page(get_html(url_formation(book_id=book_id)))
+    book_feateres = parse_book_page(get_html(f'https://tululu.org/b{book_id}/'))
     download_txt(book_id, book_feateres['book_title'], books_folder)
     download_image(book_id, book_feateres['image_src'], images_folder)
     print_book_features(book_feateres)
@@ -21,23 +21,13 @@ def main():
     book_ids = get_initial_args()    
     books_folder = 'books'
     images_folder = 'images'    
-    for book_id in range(book_ids.start_id, book_ids.end_id+1):
+    for book_id in range(book_ids.start_id, book_ids.end_id + 1):
         try:
             fetch_book(book_id, books_folder, images_folder)
         except HTTPError: 
             print('Книга с таким номером не найдена')
         except ConnectionError:
             print('Ошибка соединения')               
-
-
-def url_formation(book_id=None, page_id=None, genre_id='l55'):
-    
-    url = 'https://tululu.org/'
-    if book_id:
-        url = f'{url}b{book_id}/'
-    if page_id:
-        url = f'{url}{genre_id}/{page_id}/'
-    return url
 
 
 def get_html(url):
