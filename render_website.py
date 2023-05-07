@@ -4,21 +4,13 @@ import json
 from livereload import Server
 
 
-def rebuild():
-    ... # do things
-    print("Site rebuilt")
-
-rebuild()
-
-
-
 def load_book_feateres():
 
     with open("books.json", "r") as json_file:
         book_feateres = json_file.read()
     return json.loads(book_feateres)            
     
-def rebuild():
+def on_reload():
     env = Environment(
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
@@ -32,6 +24,6 @@ def rebuild():
 
 server = Server()
 
-server.watch('template.html', rebuild)
+server.watch('template.html', on_reload)
 
 server.serve(root='.')
