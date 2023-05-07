@@ -59,7 +59,8 @@ def fetch_books(page_id, books_folder, images_folder, skip_txt, skip_images, bas
             download_txt(book_id, book_feateres['book_title'], books_folder)
             book_feateres['book_path'] = f'{books_folder}/{book_feateres["book_title"]}.txt' 
         if not skip_images:
-            download_image(book_id, book_feateres['image_src'], images_folder)                   
+            download_image(book_id, book_feateres['image_src'], images_folder)
+            book_feateres['image_src'] = f"{images_folder}/{book_feateres['image_src'].split('/')[2]}"                    
         page_book_feateres.append(book_feateres)          
     return page_book_feateres
 

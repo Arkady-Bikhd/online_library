@@ -43,7 +43,7 @@ def parse_book_page(soup):
     title_tag = soup.select_one('h1')
     title_tag_text = title_tag.text.split('::')
     comments = soup.select('.texts span')
-    genres = soup.select('.d_book a')
+    genres = soup.select('span.d_book a')
     book_features = {
         'book_title':  title_tag_text[0].strip(),
         'book_author': title_tag_text[1].strip(),
@@ -56,8 +56,9 @@ def parse_book_page(soup):
 
 def check_for_redirect(response):
 
-    if response.history:
-       raise HTTPError
+   return not response.history
+   # if response.history:
+     #  raise HTTPError
      
 
 
@@ -67,13 +68,13 @@ def download_txt(book_id, book_title, folder):
     payload = {'id': book_id}
     response = requests.get(text_url, params=payload)
     response.raise_for_status()
-    check_for_redirect(response)
-    filename = f'{sanitize_filename(book_title)}.txt'
-    current_dir = Path.cwd() / folder
-    Path(current_dir).mkdir(parents=True, exist_ok=True)
-    filepath = Path() / current_dir / filename
-    with open(filepath, 'wb') as file:
-        file.write(response.content)
+    if check_for_redirect(response):
+        filename = f'{sanitize_filename(book_title)}.txt'
+        current_dir = Path.cwd() / folder
+        Path(current_dir).mkdir(parents=True, exist_ok=True)
+        filepath = Path() / current_dir / filename
+        with open(filepath, 'wb') as file:
+            file.write(response.content)
 
 def download_image(book_id, image_src, folder):
 
