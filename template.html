@@ -15,8 +15,8 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <div class="container">
-      <nav aria-label="Page navigation", class="ml-auto">
-        <ul class="pagination">
+      <nav aria-label="Page navigation" class="ml-auto">
+        <ul class="pagination mt-4">
           {% if current_page == 0 %}
             <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Назад</a></li>
           {% else %}
@@ -50,6 +50,13 @@
                     <div class="card-body">
                       <h5 class="card-title">{{ book.book_title }}</h5>
                       <p class="card-text">{{ book.book_author }}</p>
+                      <h6>
+                        {% for genre in book.book_genres %}
+                          <span class="badge badge-secondary">
+                            {{ genre }}
+                          </span>
+                        {% endfor %}
+                      </h6>
                       <a href="../{{ book.book_path }}" target="_blank" rel="noopener noreferrer">Читать</a>
                     </div>
                   </div>
