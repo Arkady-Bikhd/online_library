@@ -9,7 +9,7 @@ def on_reload():
 
     with open("books.json", "r") as json_file:
         json_books_feateres = json_file.read()
-    json_books_feateres = json.loads(json_books_feateres)
+    json_books_feateres = json.loads(json_books_feateres)    
     for number, books_feateres in enumerate(json_books_feateres):
         env = Environment(
             loader=FileSystemLoader('.'),
@@ -18,6 +18,8 @@ def on_reload():
         template = env.get_template('template.html')
         rendered_page = template.render(
             books_feateres=list(chunked(books_feateres, 2)),
+            current_page=number,
+            pages_number=len(json_books_feateres),
         )
         current_dir = Path.cwd() / 'pages'
         Path(current_dir).mkdir(parents=True, exist_ok=True)
