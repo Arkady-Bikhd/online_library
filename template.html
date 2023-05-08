@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Библиотека</title>
   </head>
   <body>    
 
@@ -18,27 +18,24 @@
       {% for books in book_feateres %}
         <div class="row">
           {% for book in books %}
-          <div class="col">
-          <div class="card mb-3" style="max-width: 540px;">
-            <div class="row no-gutters">
-              <div class="col-md-4">
-                <img src="{{ book.image_src }}" class="card-img" alt="{{ book.book_title }}">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">{{ book.book_title }}</h5>
-                  <p class="card-text">{{ book.book_author }}</p>
-                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            <div class="col">
+              <div class="card mb-3" style="max-width: 540px;">
+                <div class="row no-gutters">
+                  <div class="col-md-4">
+                    <img src="{{ book.image_src }}" class="card-img" alt="{{ book.book_title }}">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ book.book_title }}</h5>
+                      <p class="card-text">{{ book.book_author }}</p>
+                      <a href="{{ book.book_path }}" target="_blank" rel="noopener noreferrer">Читать</a>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>  
-        </div>       
+              </div>  
+            </div>       
           {% endfor %}  
         </div>
-      </div>
-        
-
       {% endfor %}
     </div>       
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
