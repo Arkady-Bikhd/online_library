@@ -1,4 +1,3 @@
-from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import json
 from more_itertools import chunked
