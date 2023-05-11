@@ -56,10 +56,8 @@ def parse_book_page(soup):
 
 def check_for_redirect(response):
 
-   return not response.history
-   # if response.history:
-     #  raise HTTPError
-     
+    if response.history:
+        raise HTTPError     
 
 
 def download_txt(book_id, book_title, folder):
@@ -67,14 +65,18 @@ def download_txt(book_id, book_title, folder):
     text_url = 'https://tululu.org/txt.php'
     payload = {'id': book_id}
     response = requests.get(text_url, params=payload)
-    response.raise_for_status()
-    if check_for_redirect(response):
+    response.raise_for_status()    
+    if not response.history:
         filename = f'{sanitize_filename(book_title)}.txt'
         current_dir = Path.cwd() / folder
         Path(current_dir).mkdir(parents=True, exist_ok=True)
         filepath = Path() / current_dir / filename
         with open(filepath, 'wb') as file:
             file.write(response.content)
+        return True            
+    else:
+        return False 
+
 
 def download_image(book_id, image_src, folder):
 
