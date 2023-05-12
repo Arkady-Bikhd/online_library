@@ -36,7 +36,7 @@ def get_user_file_path():
     parser = argparse.ArgumentParser(
         description='Программа формирует оффлайн-библиотеку',               
     )
-    parser.add_argument('-f', '--json_file', default='books.json', help='Имя json-файла')
+    parser.add_argument('-f', '--json_file_path', default='books.json', help='Имя json-файла')
     
     args = parser.parse_args()
-    return args.json_file
+    return args.json_file_path
