@@ -1,20 +1,20 @@
 import argparse
 import json
+from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from more_itertools import chunked
-from pathlib import Path
+
 
     
 def on_reload():
 
-    json_file_name = get_user_file()
-    print(json_file_name)
-    with open(json_file_name, 'r') as json_file:
-        json_books_features = json.load(json_file) 
+    json_file_path = get_user_file()    
+    with open(json_file_path, 'r') as json_file:
+        books_features = json.load(json_file) 
     books_per_page_count = 20
-    json_books_features = list(chunked(json_books_features, books_per_page_count))
-    for number, books_features in enumerate(json_books_features):
+    page_books_features = list(chunked(books_features, books_per_page_count))
+    for number, books_features in enumerate(page_books_features):
         env = Environment(
             loader=FileSystemLoader('.'),
             autoescape=select_autoescape(['html', 'xml'])
@@ -24,12 +24,12 @@ def on_reload():
         rendered_page = template.render(
             books_features=list(chunked(books_features, columns_count)),
             current_page=number,
-            pages_number=len(json_books_features),
+            pages_number=len(page_books_features),
         )
         current_dir = Path.cwd() / 'pages'
         Path(current_dir).mkdir(parents=True, exist_ok=True)
-        file_name = Path() / current_dir / f'index{number}.html'        
-        with open(file_name, 'w', encoding="utf8") as file:
+        index_file_path = Path() / current_dir / f'index{number}.html'        
+        with open(index_file_path, 'w', encoding="utf8") as file:
             file.write(rendered_page)
 
 

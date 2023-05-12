@@ -47,8 +47,7 @@ def create_books_json(books_features, json_path):
     for books in books_features:
         for book in books:
             if book['book_path']:
-                json_books_features.append(book)   
-   # print(json_books_features)    
+                json_books_features.append(book)      
     with open(filepath, "w") as json_file:
         json.dump(json_books_features, json_file, ensure_ascii=False)
 
