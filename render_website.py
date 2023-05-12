@@ -5,11 +5,10 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from more_itertools import chunked
 
-
     
 def on_reload():
 
-    json_file_path = get_user_file()    
+    json_file_path = get_user_file_path()    
     with open(json_file_path, 'r') as json_file:
         books_features = json.load(json_file) 
     books_per_page_count = 20
@@ -33,7 +32,7 @@ def on_reload():
             file.write(rendered_page)
 
 
-def get_user_file():
+def get_user_file_path():
      
     parser = argparse.ArgumentParser(
         description='Программа формирует оффлайн-библиотеку',               
